@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>韓国語オノマトペ</title>
+    <title>韓国語オノマトペ超特訓 300</title>
     <!-- Tailwind CSS for Modern UI -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- FontAwesome for Icons -->
@@ -26,9 +26,9 @@
         <header class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white text-center relative">
             <h1 class="text-2xl md:text-3xl font-bold tracking-wide flex justify-center items-center gap-3">
                 <i class="fa-solid fa-graduation-cap text-yellow-300"></i>
-                韓国語オノマトペクイズ
+                韓国語オノマトペ超特訓 300
             </h1>
-            <p class="text-indigo-100 text-xs md:text-sm mt-2">マスターレベルを目指してクイズに挑戦！</p>
+            <p class="text-indigo-100 text-xs md:text-sm mt-2">マスターレベルを目指して全300問に挑戦！</p>
         </header>
 
         <!-- メインコンテンツエリア -->
@@ -64,7 +64,7 @@
                             <span class="text-xs font-bold text-purple-600 bg-purple-200/50 px-2.5 py-1 rounded-full">全300網羅</span>
                         </div>
                         <h2 class="text-xl font-bold text-slate-800 group-hover:text-purple-600 transition-colors">じっくり単語帳モード</h2>
-                        <p class="text-sm text-slate-500 mt-2">全300個のオノマトペをめくりながら、自分のペースで暗記・復્ષできます。</p>
+                        <p class="text-sm text-slate-500 mt-2">全300問のオノマトペをめくりながら、自分のペースで暗記・復習できます。</p>
                     </div>
                 </div>
 
@@ -172,7 +172,7 @@
     </div>
 
     <script>
-        let allWordsData = []; // 外部JSONから読み込む全データ
+        let allWordsData = []; 
         let quizQueue = [];
         let currentQuizIndex = 0;
         let quizScore = 0;
@@ -183,14 +183,12 @@
         // 外部JSONデータを非同期で読み込む
         async function loadData() {
             try {
-                const response = await fetch('quiz-data.json');
+                // ここを「questions.json」に変更しました！
+                const response = await fetch('questions.json');
                 if (!response.ok) throw new Error('JSONファイルの読み込みに失敗しました');
                 allWordsData = await response.json();
                 
-                // 画面上の総問題数を自動反映
                 document.getElementById('total-words-count').innerHTML = `${allWordsData.length} <span class="text-sm font-normal text-slate-500">語</span>`;
-                
-                // ローディングを消してダッシュボードを表示
                 document.getElementById('view-loading').classList.add('hidden');
                 showDashboard();
             } catch (error) {
@@ -198,7 +196,7 @@
                 document.getElementById('view-loading').innerHTML = `
                     <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl text-center">
                         <p class="text-rose-600 font-bold text-lg"><i class="fa-solid fa-triangle-exclamation"></i> データロードエラー</p>
-                        <p class="text-xs text-slate-500 mt-2">同じフォルダに「quiz-data.json」が正しく配置されているかご確認ください。</p>
+                        <p class="text-xs text-slate-500 mt-2">同じフォルダに「questions.json」が正しく配置されているかご確認ください。</p>
                     </div>
                 `;
             }
@@ -227,7 +225,6 @@
             hideAllViews();
             document.getElementById('view-quiz').classList.remove('hidden');
             
-            // 全データからランダムに10問抽出
             const shuffled = [...allWordsData].sort(() => 0.5 - Math.random());
             quizQueue = shuffled.slice(0, 10);
             
@@ -242,15 +239,12 @@
             
             const currentQuiz = quizQueue[currentQuizIndex];
             
-            // プログレス更新
             document.getElementById('quiz-progress-text').innerText = `第 ${currentQuizIndex + 1} 問 / 10問中`;
             document.getElementById('quiz-score-live').innerText = `スコア: ${quizScore}`;
             document.getElementById('quiz-progress-bar').style.width = `${((currentQuizIndex) / 10) * 100}%`;
             
-            // 問題文セット（純粋な韓国語）
             document.getElementById('quiz-question').innerText = currentQuiz.question;
             
-            // 選択肢生成
             const choicesContainer = document.getElementById('quiz-choices');
             choicesContainer.innerHTML = '';
             
@@ -278,7 +272,6 @@
                 selectedButton.className = "w-full text-left bg-rose-50 border-2 border-rose-500 text-rose-700 font-bold py-4 px-6 rounded-2xl shadow-sm flex items-center justify-between";
                 selectedButton.innerHTML = `<span>${chosenOption}</span><i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>`;
                 
-                // アイコンを無視して<span>の中身だけで正解ボタンをハイライト
                 for (let btn of choicesButtons) {
                     const spanText = btn.querySelector('span').innerText.trim();
                     if (spanText === currentQuiz.answer) {
@@ -288,7 +281,6 @@
                 }
             }
             
-            // 解説表示
             document.getElementById('quiz-explanation').innerText = currentQuiz.explanation;
             document.getElementById('quiz-explanation-box').classList.remove('hidden');
         }
@@ -336,7 +328,7 @@
             const currentData = allWordsData[studyIndex];
             
             document.getElementById('study-index').innerText = `${studyIndex + 1} / ${allWordsData.length}`;
-            document.getElementById('study-word').innerText = currentData.question; // 余計なreplaceを廃止して綺麗に表示
+            document.getElementById('study-word').innerText = currentData.question; 
             document.getElementById('study-meaning').innerText = currentData.answer;
             document.getElementById('study-desc').innerText = currentData.explanation;
         }
@@ -363,3 +355,4 @@
     </script>
 </body>
 </html>
+
