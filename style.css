@@ -1,0 +1,1079 @@
+/* =========================
+   シムさんと学ぶ韓国語
+   Cafe App Design
+========================= */
+
+
+/* 全体 */
+
+* {
+    box-sizing:border-box;
+}
+
+
+body {
+
+    margin:0;
+
+    min-height:100vh;
+
+    font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Hiragino Sans",
+    "Yu Gothic",
+    sans-serif;
+
+
+    background:
+    linear-gradient(
+        180deg,
+        #fff8f5 0%,
+        #fff0f5 50%,
+        #f7f8ff 100%
+    );
+
+
+    color:#555;
+
+}
+
+
+
+
+/* メイン */
+
+.container {
+
+    width:100%;
+
+    max-width:430px;
+
+    min-height:100vh;
+
+    margin:auto;
+
+    padding:25px 20px 40px;
+
+    text-align:center;
+
+    position:relative;
+
+}
+
+
+
+
+/* タイトル */
+
+h1 {
+
+
+    color:#8b5e6b;
+
+
+    font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Hiragino Sans",
+    "Yu Gothic",
+    sans-serif;
+
+
+    font-size:26px;
+
+
+    font-weight:800;
+
+
+    letter-spacing:1px;
+
+
+    text-shadow:
+
+    0 2px 5px rgba(0,0,0,0.08);
+
+
+}
+
+
+
+
+
+/* サブタイトル */
+
+.subtitle {
+
+
+    margin-top:8px;
+
+
+    color:#b58b95;
+
+
+    font-size:16px;
+
+
+    letter-spacing:3px;
+
+
+}
+
+
+
+
+/* トップ画面カード */
+
+
+#startArea {
+
+
+    margin-top:45px;
+
+
+    background:
+
+    rgba(255,255,255,0.9);
+
+
+    padding:
+
+    35px 25px;
+
+
+    border-radius:30px;
+
+
+    border:
+
+    1px solid #f3d7df;
+
+
+    box-shadow:
+
+    0 15px 35px
+
+    rgba(180,120,140,0.15);
+
+
+}
+
+
+
+
+
+/* キャッチコピー */
+
+
+#startArea p {
+
+
+    color:#7d646b;
+
+
+    font-size:17px;
+
+
+    line-height:1.8;
+
+
+    font-weight:500;
+
+
+}
+
+
+
+
+
+/* スタートボタン */
+
+
+#startButton {
+
+
+    width:100%;
+
+
+    padding:18px;
+
+
+    margin-top:25px;
+
+
+    border:none;
+
+
+    border-radius:40px;
+
+
+    background:
+
+    linear-gradient(
+
+    135deg,
+
+    #f7a8bd,
+
+    #d99be8
+
+    );
+
+
+    color:white;
+
+
+    font-size:18px;
+
+
+    font-weight:bold;
+
+
+    letter-spacing:1px;
+
+
+    box-shadow:
+
+
+    0 10px 25px
+
+    rgba(220,150,180,0.35);
+
+
+    transition:.2s;
+
+
+}
+
+
+
+
+#startButton:active {
+
+
+    transform:
+
+    translateY(3px);
+
+
+}
+
+
+
+
+/* クイズエリア */
+
+
+#quizArea {
+
+
+    margin-top:20px;
+
+
+}
+
+
+
+
+/* 得点 */
+
+
+.score {
+
+
+    background:white;
+
+
+    padding:12px;
+
+
+    border-radius:20px;
+
+
+    color:#4267b2;
+
+
+    font-weight:bold;
+
+
+    margin-bottom:20px;
+
+
+    box-shadow:
+
+    0 5px 15px
+
+    rgba(0,0,0,0.05);
+
+
+}
+
+
+
+
+
+/* 問題カード */
+
+
+#question {
+
+
+    background:white;
+
+
+    padding:30px 20px;
+
+
+    border-radius:30px;
+
+
+    border:
+
+    1px solid #f2dce3;
+
+
+    font-size:22px;
+
+
+    font-weight:bold;
+
+
+    line-height:1.6;
+
+
+    color:#6b5360;
+
+
+    box-shadow:
+
+
+    0 10px 25px
+
+    rgba(0,0,0,0.08);
+
+
+}/* 発音ボタン */
+
+#speakButton {
+
+    margin:20px auto;
+
+    padding:12px 25px;
+
+    border-radius:30px;
+
+    border:1px solid #efd9df;
+
+    background:white;
+
+    color:#98727d;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    box-shadow:
+
+    0 5px 12px rgba(0,0,0,0.05);
+
+}
+
+
+
+
+
+/* 選択肢 */
+
+#choices button {
+
+
+    width:100%;
+
+
+    padding:16px;
+
+
+    margin:8px 0;
+
+
+    border-radius:20px;
+
+
+    border:
+
+    1px solid #f3dce4;
+
+
+    background:white;
+
+
+    color:#66545c;
+
+
+    font-size:16px;
+
+
+    font-weight:bold;
+
+
+    box-shadow:
+
+
+    0 5px 15px rgba(0,0,0,0.08);
+
+
+    transition:.2s;
+
+
+}
+
+
+
+
+
+#choices button:active {
+
+
+    transform:scale(.96);
+
+
+}
+
+
+
+
+
+/* 正解・不正解 */
+
+#result {
+
+
+    margin-top:20px;
+
+
+    font-size:24px;
+
+
+    font-weight:bold;
+
+
+    color:#ff6699;
+
+
+}
+
+
+
+
+/* 解説 */
+
+#explanation {
+
+
+    margin-top:15px;
+
+
+    padding:20px;
+
+
+    background:white;
+
+
+    border-radius:20px;
+
+
+    border:
+
+    1px solid #f3dce4;
+
+
+    line-height:1.8;
+
+
+    font-size:15px;
+
+
+    color:#66545c;
+
+
+}
+
+
+
+
+/* 次の問題へ */
+
+#nextArea {
+
+
+    width:100%;
+
+
+    text-align:center;
+
+
+}
+
+
+
+
+#nextButton {
+
+
+    display:block;
+
+
+    width:90%;
+
+
+    margin:25px auto 0;
+
+
+    padding:16px;
+
+
+    border:none;
+
+
+    border-radius:30px;
+
+
+    background:
+
+
+    linear-gradient(
+
+    135deg,
+
+    #d8a7ff,
+
+    #9fc8ff
+
+    );
+
+
+    color:white;
+
+
+    font-size:17px;
+
+
+    font-weight:bold;
+
+
+    box-shadow:
+
+
+    0 8px 18px rgba(150,130,220,0.25);
+
+
+}
+
+
+
+
+
+/* トップへ戻るボタン */
+
+#homeButton {
+
+    display:block !important;
+
+    width:auto;
+
+    margin:10px 0 20px;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    border:1px solid #efd9df;
+
+    background:white;
+
+    color:#98727d;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    box-shadow:
+
+    0 3px 8px rgba(0,0,0,0.08);
+
+
+}
+
+
+
+
+/* 結果画面 */
+
+.result-card {
+
+
+    background:white;
+
+
+    padding:35px 20px;
+
+
+    border-radius:30px;
+
+
+    box-shadow:
+
+
+    0 10px 25px rgba(0,0,0,0.08);
+
+
+}
+
+
+
+
+/* iPhoneサイズ調整 */
+
+@media(max-width:430px){
+
+
+    h1 {
+
+
+        font-size:23px;
+
+    }
+
+
+    #question {
+
+
+        font-size:20px;
+
+    }
+
+
+}
+/* 左上の小さい戻るボタン */
+
+#homeButton {
+
+    top: 10px;
+
+    left: 10px;
+
+    width: auto;
+
+    margin: 0;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    background: rgba(255,255,255,0.9);
+
+    color:#98727d;
+
+    border:1px solid #efd9df;
+
+    box-shadow:
+
+    0 3px 10px rgba(0,0,0,0.08);
+
+    z-index:100;
+
+}
+/* 正解ボタン */
+
+.correct {
+
+    background:
+    linear-gradient(
+        135deg,
+        #d9f7df,
+        #c8f0d1
+    ) !important;
+
+    border:1px solid #a9ddb5 !important;
+
+    color:#3d7a4a !important;
+
+}
+
+
+/* 不正解ボタン */
+
+.wrong {
+
+    background:
+    linear-gradient(
+        135deg,
+        #ffe1e8,
+        #ffd0db
+    ) !important;
+
+    border:1px solid #f2aabd !important;
+
+    color:#a44b62 !important;
+
+}
+/* =========================
+   iPhone表示最適化
+   選択肢4つを1画面表示
+========================= */
+
+
+/* 問題カードを少しコンパクト */
+
+#question {
+
+    padding:22px 15px;
+
+    font-size:20px;
+
+    line-height:1.4;
+
+}
+
+
+
+/* 発音ボタンを小さく */
+
+#speakButton {
+
+    margin:12px auto;
+
+    padding:9px 20px;
+
+    font-size:14px;
+
+}
+
+
+
+/* 選択肢4ボタン */
+
+#choices button {
+
+    width:100%;
+
+    padding:11px;
+
+    margin:5px 0;
+
+    min-height:45px;
+
+    border-radius:16px;
+
+    font-size:15px;
+
+}
+
+
+
+/* 得点表示をコンパクト */
+
+.score {
+
+    padding:8px;
+
+    margin-bottom:12px;
+
+    font-size:14px;
+
+}
+
+
+
+/* 解説を少し小さく */
+
+#explanation {
+
+    padding:15px;
+
+    margin-top:12px;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+}
+
+
+
+/* 次へボタン */
+
+#nextButton {
+
+    padding:12px;
+
+    margin-top:18px;
+
+    font-size:15px;
+
+}
+
+
+
+/* 戻るボタン */
+
+#homeButton {
+
+    padding:5px 12px;
+
+    font-size:12px;
+
+}
+
+
+/* iPhone SEなど小さい画面 */
+
+@media(max-width:390px){
+
+    h1 {
+
+        font-size:21px;
+
+    }
+
+
+    #question {
+
+        font-size:18px;
+
+        padding:18px 12px;
+
+    }
+
+
+    #choices button {
+
+        padding:9px;
+
+        font-size:14px;
+
+        min-height:40px;
+
+    }
+
+}
+/* =========================
+   iPhone 1画面表示調整
+========================= */
+
+
+/* 全体の余白を減らす */
+
+.container {
+
+    padding:10px 15px 25px;
+
+}
+
+
+
+/* タイトルを小さく */
+
+h1 {
+
+    font-size:21px;
+
+    margin:5px 0;
+
+}
+
+
+
+/* サブタイトル */
+
+.subtitle {
+
+    font-size:13px;
+
+    margin:3px 0;
+
+}
+
+
+
+/* 得点 */
+
+.score {
+
+    padding:6px;
+
+    margin:8px 0;
+
+    font-size:13px;
+
+}
+
+
+
+/* 問題カード */
+
+#question {
+
+    padding:15px 10px;
+
+    font-size:18px;
+
+    margin-bottom:5px;
+
+}
+
+
+
+/* 発音ボタン */
+
+#speakButton {
+
+    margin:5px auto;
+
+    padding:7px 18px;
+
+    font-size:13px;
+
+}
+
+
+
+/* 選択肢 */
+
+#choices button {
+
+    padding:8px;
+
+    margin:4px 0;
+
+    min-height:38px;
+
+    font-size:14px;
+
+    border-radius:14px;
+
+}
+
+
+
+/* 次へ */
+
+#nextButton {
+
+    padding:10px;
+
+    margin-top:10px;
+
+}
+
+
+
+/* 戻る */
+
+#homeButton {
+
+    padding:4px 10px;
+
+    font-size:11px;
+
+}
+/* 小さい戻るボタン */
+
+#homeButton {
+
+    width:auto !important;
+
+    padding:4px 10px !important;
+
+    font-size:11px !important;
+
+    border-radius:15px;
+
+    margin:0 0 5px auto !important;
+
+    display:block;
+
+    background:white;
+
+    color:#98727d;
+
+    box-shadow:
+
+    0 2px 8px rgba(0,0,0,0.08);
+
+}
+/* 戻るボタンをシンプル表示 */
+
+#homeButton {
+
+    background:none !important;
+
+    border:none !important;
+
+    box-shadow:none !important;
+
+    padding:2px 0 !important;
+
+    width:auto !important;
+
+    font-size:12px !important;
+
+    color:#98727d;
+
+}
+#quizArea {
+
+    margin-top:5px;
+
+}
+
+
+#question {
+
+    padding:12px 10px;
+
+    font-size:17px;
+
+}
+
+
+#speakButton {
+
+    margin:3px auto;
+
+    padding:6px 15px;
+
+}
+
+
+#choices button {
+
+    padding:7px;
+
+    margin:3px 0;
+
+    min-height:36px;
+
+    font-size:14px;
+
+}
+h1 {
+
+    font-size:22px !important;
+
+    line-height:1.4;
+
+    margin:8px 0 15px !important;
+
+    letter-spacing:1px;
+
+}
+/* 空の選択肢ボタンを消す */
+
+#choices button:empty {
+    display:none !important;
+}

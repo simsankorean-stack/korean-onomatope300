@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+韓国語って面白い！シムさんと楽しく学ぶ韓国語オノマトペ
+</title>
+
+
+<link rel="stylesheet" href="style.css?v=21">
+<link rel="manifest" href="manifest.json">
+
+</head>
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+🌸 シムさんと学ぶ<br>
+  韓国語オノマトペクイズ
+</h1>
+
+
+<div id="startArea">
+
+<p class="catchcopy">
+韓国語をもっと身近に♪<br>
+クイズ形式で楽しく覚えよう！
+</p>
+
+<button id="startButton">
+10問チャレンジ開始
+</button>
+
+</div>
+
+
+
+
+
+
+
+
+<div id="quizArea" style="display:none;">
+
+<button id="homeButton" class="homeButton">
+← 戻る
+</button>
+
+<div id="score" class="score">
+
+現在の得点：0 / 10
+
+</div>
+
+
+
+
+
+<div id="question">
+
+問題を読み込み中…
+
+</div>
+
+
+
+
+
+
+<!-- 発音ボタン -->
+
+<button id="speakButton">
+
+🔊 発音を聞く
+
+</button>
+
+
+
+
+
+
+
+
+<div id="choices">
+
+</div>
+
+
+
+
+
+
+
+
+<div id="result">
+
+</div>
+
+
+
+
+
+
+
+
+<div id="explanation">
+
+</div>
+
+
+
+
+
+
+
+
+<div id="nextArea">
+
+
+<button id="nextButton" style="display:none;">
+
+次の問題へ
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<script src="script.js?v=21"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>
