@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>韓国語オノマトペ超特訓 300</title>
+    <title>韓国語オノマトペクイズ</title>
     <!-- Tailwind CSS for Modern UI -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- FontAwesome for Icons -->
@@ -26,16 +26,22 @@
         <header class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white text-center relative">
             <h1 class="text-2xl md:text-3xl font-bold tracking-wide flex justify-center items-center gap-3">
                 <i class="fa-solid fa-graduation-cap text-yellow-300"></i>
-                韓国語オノマトペ超特訓 300
+                韓国語オノマトペクイズ
             </h1>
-            <p class="text-indigo-100 text-xs md:text-sm mt-2">マスターレベルを目指して全300問に挑戦！</p>
+            <p class="text-indigo-100 text-xs md:text-sm mt-2">マスターレベルを目指して全300個からクイズに挑戦！</p>
         </header>
 
         <!-- メインコンテンツエリア -->
         <main class="p-6 md:p-10">
             
+            <!-- ローディング画面 -->
+            <div id="view-loading" class="text-center py-12 space-y-4">
+                <i class="fa-solid fa-circle-notch animate-spin text-4xl text-indigo-600"></i>
+                <p class="text-slate-500 font-medium">クイズデータを読み込み中...</p>
+            </div>
+            
             <!-- 1. ダッシュボード（初期画面） -->
-            <div id="view-dashboard" class="space-y-8">
+            <div id="view-dashboard" class="hidden space-y-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- クイズスタートカード -->
                     <div onclick="startQuiz()" class="cursor-pointer bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-2xl border border-indigo-200 shadow-sm hover:shadow-md transition-all transform hover:-translate-y-1 group">
@@ -58,7 +64,7 @@
                             <span class="text-xs font-bold text-purple-600 bg-purple-200/50 px-2.5 py-1 rounded-full">全300網羅</span>
                         </div>
                         <h2 class="text-xl font-bold text-slate-800 group-hover:text-purple-600 transition-colors">じっくり単語帳モード</h2>
-                        <p class="text-sm text-slate-500 mt-2">全300問のオノマトペをめくりながら、自分のペースで暗記・復習できます。</p>
+                        <p class="text-sm text-slate-500 mt-2">全300個のオノマトペをめくりながら、自分のペースで暗記・復્ષできます。</p>
                     </div>
                 </div>
 
@@ -66,7 +72,7 @@
                 <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-wrap items-center justify-around gap-4 text-center">
                     <div>
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">総収録数</p>
-                        <p class="text-3xl font-black text-slate-700 mt-1">300 <span class="text-sm font-normal text-slate-500">語</span></p>
+                        <p id="total-words-count" class="text-3xl font-black text-slate-700 mt-1">0 <span class="text-sm font-normal text-slate-500">語</span></p>
                     </div>
                     <div class="h-8 w-px bg-slate-200 hidden sm:block"></div>
                     <div>
@@ -93,15 +99,14 @@
                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 text-center shadow-inner relative overflow-hidden">
                     <div class="absolute top-2 left-3 text-xs font-bold text-slate-300 uppercase tracking-widest">Question</div>
                     <p id="quiz-question" class="text-2xl md:text-3xl font-black text-slate-800 kr-font leading-relaxed"></p>
+                    <p class="text-xs text-slate-400 mt-2">このオノマトペの意味は？</p>
                 </div>
 
                 <!-- 選択肢グループ -->
-                <div id="quiz-choices" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- JSで動的生成 -->
-                </div>
+                <div id="quiz-choices" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
 
                 <!-- 解説エリア -->
-                <div id="quiz-explanation-box" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-5 space-y-2 animate-fade-in">
+                <div id="quiz-explanation-box" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-5 space-y-2">
                     <h3 class="font-bold text-emerald-800 flex items-center gap-2">
                         <i class="fa-solid fa-circle-info"></i> 解説・ニュアンス
                     </h3>
@@ -118,12 +123,11 @@
                     <button onclick="showDashboard()" class="text-sm font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1">
                         <i class="fa-solid fa-chevron-left"></i> 戻る
                     </button>
-                    <span id="study-index" class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full">1 / 300</span>
+                    <span id="study-index" class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-full">1 / --</span>
                 </div>
 
                 <!-- 単語カード (Flashcard) -->
                 <div onclick="flipStudyCard()" class="cursor-pointer bg-gradient-to-tr from-purple-600 to-indigo-600 text-white rounded-3xl p-12 text-center shadow-xl h-64 flex flex-col items-center justify-center relative select-none transform transition-transform duration-500" id="study-card">
-                    <!-- 表・裏の状態を管理 -->
                     <div id="study-card-front" class="space-y-4">
                         <p id="study-word" class="text-4xl md:text-5xl font-black tracking-wide kr-font"></p>
                         <p class="text-xs text-indigo-200 bg-white/10 px-3 py-1 rounded-full inline-block">タップして意味を表示</p>
@@ -147,7 +151,7 @@
 
             <!-- 4. 結果発表画面 -->
             <div id="view-result" class="hidden text-center space-y-6 py-6">
-                <div class="w-24 h-24 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner animate-bounce">
+                <div class="w-24 h-24 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner">
                     <i class="fa-solid fa-trophy"></i>
                 </div>
                 <h2 class="text-2xl md:text-3xl font-black text-slate-800">テスト終了！</h2>
@@ -168,58 +172,40 @@
     </div>
 
     <script>
-        // ==========================================
-        // 全300問のマスターデータ統合
-        // ==========================================
-        const allWordsData = [
-            // --- 第1回〜第3回までの全データをここに集約 ---
-            // [スペース削減のため、前述のオノマトペをここに内包した完全版の300配列をアプリ側でシミュレートして展開します]
-            {"question": "두근두근 の意味は？", "choices": ["ドキドキ", "ワクワク", "ペコペコ", "ニコニコ"], "answer": "ドキドキ", "explanation": "心臓が高鳴る定番の表現です。"},
-            {"question": "말랑말랑 の意味は？", "choices": ["モチモチ・マシュマロのように柔らかい", "カチカチ", "ザラザラ", "カラカラ"], "answer": "モチモチ・マシュマロのように柔らかい", "explanation": "お餅やマシュマロの柔らかさです。"},
-            {"question": "반짝반짝 の意味は？", "choices": ["きらきら・ぴかぴか", "さらさら", "どろどろ", "とぼとぼ"], "answer": "きらきら・ぴかぴか", "explanation": "星や宝石が輝く様子です。"},
-            {"question": "벌벌 の意味は？", "choices": ["（恐怖や寒さで）ぶるぶる・がくがく", "にこにこ", "すたすた", "さらさら"], "answer": "（恐怖や寒さで）ぶるぶる・がくがく", "explanation": "벌벌は体や手足が小刻みにぶるぶると震える様子です。"},
-            {"question": "달달 の意味は？", "choices": ["（人を）きりきり（責め立てる）・（寒さで）がくがく", "のんびり", "優しく", "だらだら"], "answer": "（人を）きりきり（責め立てる）・（寒さで）がくがく", "explanation": "달달は、人をせっついて精神的に追い詰める様子（달달 볶다）などに使います。"},
-            {"question": "덜덜 の意味は？", "choices": ["（恐怖や寒さで）がたがた・ぶるぶる", "ぽかぽか", "からから", "すっきり"], "answer": "（恐怖や寒さで）가たがた・ぶるぶる", "explanation": "덜덜は、寒さや恐怖で身の毛もよだつほど大きくがたがた震える様子です。"},
-            {"question": "부르르 の意味は？", "choices": ["（怒りや寒さで）身震い・ぶるっと", "うっとり", "すやすや", "だらだら"], "answer": "（怒りや寒さで）身震い・ぶるっと", "explanation": "부르르は、一瞬激しい怒りがこみ上げたりして「ぶるっと」大きく震える様子です。"},
-            {"question": "파르르 の意味は？", "choices": ["（まぶたや唇が）ぴくぴく・（怒りで）わなわな", "つるつる", "まっすぐ", "しーんと"], "answer": "（まぶたや唇が）ぴくぴく・（怒りで）わなわな", "explanation": "파르르は、まぶたがぴくぴく動く様子などを指します。"},
-            {"question": "바르르 の意味は？", "choices": ["（怒りで手が）震える・（痙攣で）ぴくぴく", "滑らかに動く", "じっと止まる", "大きく跳ねる"], "answer": "（怒りで手が）震える・（痙攣で）ぴくぴく", "explanation": "바르르は怒りや緊張のあまり手足が小刻みに震えてコントロールが効かない様子です。"},
-            {"question": "펄떡펄떡 の意味は？", "choices": ["（魚や心臓が）ぴちぴち・バタバタ跳ねる", "静かに横たわる", "沈み込む", "のろのろ進む"], "answer": "（魚や心臓が）ぴちぴち・バタバタ跳ねる", "explanation": "펄떡펄떡は水揚げされた魚が激しく跳ねる音や、驚きで胸がバクバクと波打つ様子です。"},
-            {"question": "폴짝폴짝 の意味は？", "choices": ["（ウサギなどが）ぴょんぴょん・軽快に跳ぶ", "這いつくばる", "立ち止まる", "ドスンと落ちる"], "answer": "（ウサギなどが）ぴょんぴょん・軽快に跳ぶ", "explanation": "폴짝폴짝は、地面を軽がると「ぴょんぴょん」とリズム良く跳び越えていく様子です。"},
-            {"question": "비틀비틀 の意味は？", "choices": ["（千鳥足で）ふらふら・よろよろ", "まっすぐ歩く", "立ち止まる", "匍匐前進"], "answer": "（千鳥足で）ふらふら・よろよろ", "explanation": "비틀비틀はお酒に酔っ払ったりしてバランスを完全に崩してふらふら歩く様子です。"},
-            {"question": "달달하다 の意味は？", "choices": ["（スイーツや恋が）甘〜い・ほっこりする", "辛くて痺れる", "苦くて耐えない", "酸味が強い"], "answer": "（スイーツや恋が）甘〜い・ほっこりする", "explanation": "달달하다は甘いカフェラテや、カップルのラブラブな雰囲気に使われます。"},
-            {"question": "주룩주룩 の意味は？", "choices": ["（雨が）ザーザー・（涙や汗が）だらだら", "しとしと", "ぽつぽつ", "カラカラ"], "answer": "（雨が）ザーザー・（涙や汗が）だらだら", "explanation": "주룩주룩は大雨が勢いよく地面を叩く音や、涙・汗が流れ落ちる様子です。"},
-            {"question": "바삭바삭 の意味は？", "choices": ["（チキンやクッキーが）サクサク・パリパリ", "しっとり", "もちもち", "ドロドロ"], "answer": "（チキンやクッキーが）サクサク・パリパリ", "explanation": "바삭바삭はフライドチキンを食べた時の「サクサク」という最高の食感です。"},
-            {"question": "쫀득쫀득 の意味は？", "choices": ["（お餅やジェラートが）もちもち・もちっ・粘り気のある弾力", "サクサク", "パサパサ", "カチカチ"], "answer": "（お餅やジェラートが）もちもち・もちっ・粘り気のある弾力", "explanation": "쫀득쫀득はトッポギやマカロンなどの「もちもちで美味しい食感」に使われます。"},
-            {"question": "우두커니 の意味は？", "choices": ["ぼんやり・ぽつんと（突っ立っている）", "シャキシャキ働く", "キョロキョロ見回す", "大声で叫ぶ"], "answer": "ぼんやり・ぽつんと（突っ立っている）", "explanation": "우두커니は何も手につかず、ただ「ぼんやり」と一箇所で立ち尽くす切ない様子です。"},
-            {"question": "따끔 の意味は？", "choices": ["（注射などで）チクッ（とする）・（小言が）耳が痛い", "すべすべで心地よい", "ぬるぬるして滑る", "もちもちして柔らかい"], "answer": "（注射などで）チクッ（とする）・（小言が）耳が痛い", "explanation": "注射針が刺さる時の「チクッ」という痛みのほか、手厳しいアドバイスにも使います。"}
-            // アプリ拡張用にダミーデータを追加。実際はこれまでの全300問のJSONオブジェクトがここにマージされます。
-        ];
-
-        // 300問に満たない場合の自動補填生成（テスト・デモ用ロジック）
-        while(allWordsData.length < 300) {
-            const id = allWordsData.length + 1;
-            allWordsData.push({
-                "question": `オノマトペ単語 No.${id} の意味は？`,
-                "choices": ["正解の選択肢表現", "間違い選択肢A", "間違い選択肢B", "間違い選択肢C"],
-                "answer": "正解の選択肢表現",
-                "explanation": `これはNo.${id}の解説データです。しっかり覚えて表現の幅を広げましょう！`
-            });
-        }
-
-        // ==========================================
-        // アプリケーション状態管理
-        // ==========================================
+        let allWordsData = []; // 外部JSONから読み込む全データ
         let quizQueue = [];
         let currentQuizIndex = 0;
         let quizScore = 0;
         let isAnswered = false;
-
         let studyIndex = 0;
         let isCardFlipped = false;
 
-        // 初期化
+        // 外部JSONデータを非同期で読み込む
+        async function loadData() {
+            try {
+                const response = await fetch('quiz-data.json');
+                if (!response.ok) throw new Error('JSONファイルの読み込みに失敗しました');
+                allWordsData = await response.json();
+                
+                // 画面上の総問題数を自動反映
+                document.getElementById('total-words-count').innerHTML = `${allWordsData.length} <span class="text-sm font-normal text-slate-500">語</span>`;
+                
+                // ローディングを消してダッシュボードを表示
+                document.getElementById('view-loading').classList.add('hidden');
+                showDashboard();
+            } catch (error) {
+                console.error(error);
+                document.getElementById('view-loading').innerHTML = `
+                    <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl text-center">
+                        <p class="text-rose-600 font-bold text-lg"><i class="fa-solid fa-triangle-exclamation"></i> データロードエラー</p>
+                        <p class="text-xs text-slate-500 mt-2">同じフォルダに「quiz-data.json」が正しく配置されているかご確認ください。</p>
+                    </div>
+                `;
+            }
+        }
+
         window.onload = function() {
-            showDashboard();
+            loadData();
             updateHighScoreDisplay();
         };
 
@@ -229,20 +215,19 @@
         }
 
         function hideAllViews() {
-            document.getElementById('view-dashboard').classList.add('hidden');
-            document.getElementById('view-quiz').classList.add('hidden');
-            document.getElementById('view-study').classList.add('hidden');
-            document.getElementById('view-result').classList.add('hidden');
+            ['view-loading', 'view-dashboard', 'view-quiz', 'view-study', 'view-result'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
         }
 
-        // ==========================================
-        // クイズモードロジック
-        // ==========================================
+        // --- クイズモードロジック ---
         function startQuiz() {
+            if (allWordsData.length === 0) return;
             hideAllViews();
             document.getElementById('view-quiz').classList.remove('hidden');
             
-            // 300問からランダムに10問抽出
+            // 全データからランダムに10問抽出
             const shuffled = [...allWordsData].sort(() => 0.5 - Math.random());
             quizQueue = shuffled.slice(0, 10);
             
@@ -262,16 +247,16 @@
             document.getElementById('quiz-score-live').innerText = `スコア: ${quizScore}`;
             document.getElementById('quiz-progress-bar').style.width = `${((currentQuizIndex) / 10) * 100}%`;
             
-            // 問題文セット
+            // 問題文セット（純粋な韓国語）
             document.getElementById('quiz-question').innerText = currentQuiz.question;
             
-            // 選択肢シャッフル＆生成
+            // 選択肢生成
             const choicesContainer = document.getElementById('quiz-choices');
             choicesContainer.innerHTML = '';
             
             currentQuiz.choices.forEach(choice => {
                 const button = document.createElement('button');
-                button.className = "w-full text-left bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 font-medium py-4 px-6 rounded-2xl shadow-sm transition-all transform active:scale-98 flex items-center justify-between group";
+                button.className = "w-full text-left bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 font-medium py-4 px-6 rounded-2xl shadow-sm transition-all flex items-center justify-between group cursor-pointer";
                 button.innerHTML = `<span>${choice}</span><i class="fa-regular fa-circle text-slate-300 group-hover:text-indigo-500 transition-colors"></i>`;
                 button.onclick = () => checkAnswer(button, choice);
                 choicesContainer.appendChild(button);
@@ -293,9 +278,10 @@
                 selectedButton.className = "w-full text-left bg-rose-50 border-2 border-rose-500 text-rose-700 font-bold py-4 px-6 rounded-2xl shadow-sm flex items-center justify-between";
                 selectedButton.innerHTML = `<span>${chosenOption}</span><i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>`;
                 
-                // 正解のボタンをハイライト
+                // アイコンを無視して<span>の中身だけで正解ボタンをハイライト
                 for (let btn of choicesButtons) {
-                    if (btn.innerText.trim() === currentQuiz.answer) {
+                    const spanText = btn.querySelector('span').innerText.trim();
+                    if (spanText === currentQuiz.answer) {
                         btn.className = "w-full text-left bg-emerald-50 border-2 border-emerald-500 text-emerald-700 font-bold py-4 px-6 rounded-2xl shadow-sm flex items-center justify-between";
                         btn.innerHTML = `<span>${currentQuiz.answer}</span><i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>`;
                     }
@@ -321,7 +307,6 @@
             document.getElementById('view-result').classList.remove('hidden');
             document.getElementById('result-score').innerText = quizScore;
             
-            // ハイスコア保存
             const currentHighScore = localStorage.getItem('onomatope_highscore') || 0;
             if (quizScore > currentHighScore) {
                 localStorage.setItem('onomatope_highscore', quizScore);
@@ -334,10 +319,9 @@
             document.getElementById('high-score').innerHTML = `${score} <span class="text-sm font-normal text-slate-500">/ 10</span>`;
         }
 
-        // ==========================================
-        // 単語帳モードロジック
-        // ==========================================
+        // --- 単語帳モードロジック ---
         function startStudy() {
+            if (allWordsData.length === 0) return;
             hideAllViews();
             document.getElementById('view-study').classList.remove('hidden');
             studyIndex = 0;
@@ -351,26 +335,16 @@
             
             const currentData = allWordsData[studyIndex];
             
-            // タイトルや問題文から韓国語単語だけを抽出して綺麗に表示
-            const cleanWord = currentData.question.replace(" の意味は？", "");
-            
-            document.getElementById('study-index').innerText = `${studyIndex + 1} / 300`;
-            document.getElementById('study-word').innerText = cleanWord;
+            document.getElementById('study-index').innerText = `${studyIndex + 1} / ${allWordsData.length}`;
+            document.getElementById('study-word').innerText = currentData.question; // 余計なreplaceを廃止して綺麗に表示
             document.getElementById('study-meaning').innerText = currentData.answer;
             document.getElementById('study-desc').innerText = currentData.explanation;
         }
 
         function flipStudyCard() {
-            const card = document.getElementById('study-card');
             isCardFlipped = !isCardFlipped;
-            
-            if (isCardFlipped) {
-                document.getElementById('study-card-front').classList.add('hidden');
-                document.getElementById('study-card-back').classList.remove('hidden');
-            } else {
-                document.getElementById('study-card-front').classList.remove('hidden');
-                document.getElementById('study-card-back').classList.add('hidden');
-            }
+            document.getElementById('study-card-front').classList.toggle('hidden', isCardFlipped);
+            document.getElementById('study-card-back').classList.toggle('hidden', !isCardFlipped);
         }
 
         function nextStudy() {
